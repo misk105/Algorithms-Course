@@ -1,2 +1,2 @@
 # Algorithms-Course
-#factorial calculation
+# factorial calculations
