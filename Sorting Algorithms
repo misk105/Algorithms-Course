@@ -1,0 +1,255 @@
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <algorithm>
+#include <random>
+#include<chrono>
+
+using namespace std;
+using namespace chrono;
+
+void selectionSort(vector<int> arr, int n) {
+  for (int i = 0; i < n - 1; i++) {
+    int indexMin = i; // Taken first index as minimum.
+    for (int j = i + 1; j < n; j++) {
+      //Making comparisons
+      if (arr[j] < arr[indexMin]) {
+        // Updating the minimum value.
+        indexMin = j;
+      }
+    }
+    // Swapping the values using swap() method.
+    swap(arr[indexMin], arr[i]);
+  }
+
+}
+
+void bubbleSort(vector<int> arr, int n)
+{
+    int i, j;
+    bool swapped;
+    for (i = 0; i < n - 1; i++) {
+        swapped = false;
+        for (j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                swap(arr[j], arr[j + 1]);
+                swapped = true;
+            }
+        }
+ 
+        // If no two elements were swapped
+        // by inner loop, then break
+        if (swapped == false)
+            break;
+    }
+  
+}
+
+void merge(vector<int> array, int const left, int const mid,
+           int const right)
+{
+    int const subArrayOne = mid - left + 1;
+    int const subArrayTwo = right - mid;
+ 
+    // Create temp arrays
+    auto *leftArray = new int[subArrayOne],
+         *rightArray = new int[subArrayTwo];
+ 
+    // Copy data to temp arrays leftArray[] and rightArray[]
+    for (auto i = 0; i < subArrayOne; i++)
+        leftArray[i] = array[left + i];
+    for (auto j = 0; j < subArrayTwo; j++)
+        rightArray[j] = array[mid + 1 + j];
+ 
+    auto indexOfSubArrayOne = 0, indexOfSubArrayTwo = 0;
+    int indexOfMergedArray = left;
+ 
+    // Merge the temp arrays back into array[left..right]
+    while (indexOfSubArrayOne < subArrayOne
+           && indexOfSubArrayTwo < subArrayTwo) {
+        if (leftArray[indexOfSubArrayOne]
+            <= rightArray[indexOfSubArrayTwo]) {
+            array[indexOfMergedArray]
+                = leftArray[indexOfSubArrayOne];
+            indexOfSubArrayOne++;
+        }
+        else {
+            array[indexOfMergedArray]
+                = rightArray[indexOfSubArrayTwo];
+            indexOfSubArrayTwo++;
+        }
+        indexOfMergedArray++;
+    }
+ 
+    // Copy the remaining elements of
+    // left[], if there are any
+    while (indexOfSubArrayOne < subArrayOne) {
+        array[indexOfMergedArray]
+            = leftArray[indexOfSubArrayOne];
+        indexOfSubArrayOne++;
+        indexOfMergedArray++;
+    }
+ 
+    // Copy the remaining elements of
+    // right[], if there are any
+    while (indexOfSubArrayTwo < subArrayTwo) {
+        array[indexOfMergedArray]
+            = rightArray[indexOfSubArrayTwo];
+        indexOfSubArrayTwo++;
+        indexOfMergedArray++;
+    }
+    delete[] leftArray;
+    delete[] rightArray;
+}
+ 
+// begin is for left index and end is right index
+// of the sub-array of arr to be sorted
+void mergeSort(vector<int> array, int const begin, int const end)
+{
+    if (begin >= end)
+        return;
+ 
+    int mid = begin + (end - begin) / 2;
+    mergeSort(array, begin, mid);
+    mergeSort(array, mid + 1, end);
+    merge(array, begin, mid, end);
+}
+
+int partition(vector<int> arr, int start, int end)
+{
+ 
+    int pivot = arr[start];
+ 
+    int count = 0;
+    for (int i = start + 1; i <= end; i++) {
+        if (arr[i] <= pivot)
+            count++;
+    }
+ 
+    // Giving pivot element its correct position
+    int pivotIndex = start + count;
+    swap(arr[pivotIndex], arr[start]);
+ 
+    // Sorting left and right parts of the pivot element
+    int i = start, j = end;
+ 
+    while (i < pivotIndex && j > pivotIndex) {
+ 
+        while (arr[i] <= pivot) {
+            i++;
+        }
+ 
+        while (arr[j] > pivot) {
+            j--;
+        }
+ 
+        if (i < pivotIndex && j > pivotIndex) {
+            swap(arr[i++], arr[j--]);
+        }
+    }
+ 
+    return pivotIndex;
+}
+ 
+void quickSort(vector<int> arr, int start, int end)
+{
+ 
+    // base case
+    if (start >= end)
+        return;
+ 
+    // partitioning the array
+    int p = partition(arr, start, end);
+ 
+    // Sorting the left part
+    quickSort(arr, start, p - 1);
+ 
+    // Sorting the right part
+    quickSort(arr, p + 1, end);
+}
+void printArray(int A[], int size)
+{
+    for (int i = 0; i < size; i++)
+        cout << A[i] << " ";
+    cout << endl;
+}
+
+// Function to generate partially sorted data array
+vector<int> generate_partially_sorted_data(int size) {
+    vector<int> data(size);
+    for (int i = 0; i < size; ++i) {
+        data[i] = i;
+    }
+    // Shuffle a portion of the array
+    random_shuffle(data.begin(), data.begin() + size / 10);
+    return data;
+}
+
+// Function to generate reversed data array
+vector<int> generate_reversed_data(int size) {
+    vector<int> data(size);
+    for (int i = 0; i < size; ++i) {
+        data[i] = size - i;
+    }
+    return data;
+}
+
+// Function to generate random data array
+vector<int> generate_random_data(int size) {
+    vector<int> data(size);
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(1, size);
+    for (int i = 0; i < size; ++i) {
+        data[i] = dis(gen);
+    }
+    return data;
+}
+
+int main() {
+    // Test the functions
+    int size ;
+    cout<<"Enter the size of the array : \n";
+    cin>>size;
+    vector<int> partially_sorted = generate_partially_sorted_data(size);
+    vector<int> reversed = generate_reversed_data(size);
+    vector<int> random = generate_random_data(size);
+
+    
+    /*auto start1 = high_resolution_clock::now();
+    bubbleSort(partially_sorted,size);
+    auto stop1 = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop1 - start1);
+    cerr << "Time taken in microseconds for bubble : "<< (double)(duration.count() / 1000.0) << endl;*/
+
+    /*auto start2 = high_resolution_clock::now();
+    selectionSort(partially_sorted,size);
+    auto stop2 = high_resolution_clock::now();
+    auto duration2 = duration_cast<microseconds>(stop2 - start2);
+    cerr << "Time taken in microseconds for selection : "<< (double)(duration2.count() / 1000.0) << endl;*/
+
+    /*auto start3 = high_resolution_clock::now();
+    quickSort(partially_sorted,0,size-1);
+    auto stop3 = high_resolution_clock::now();
+    auto duration3 = duration_cast<microseconds>(stop3 - start3);
+    cerr << "Time taken in microseconds for quick: "<< (double)(duration3.count() / 1000.0) << endl;*/
+
+    auto start4 = high_resolution_clock::now();
+    mergeSort(partially_sorted,0,size-1);
+    auto stop4 = high_resolution_clock::now();
+    auto duration4 = duration_cast<microseconds>(stop4 - start4);
+    cerr << "Time taken in microseconds for merge: "<< (double)(duration4.count() / 1000.0) << endl;
+
+    /*bubbleSort(reversed,size);
+    selectionSort(reversed,size);
+    insertionSort(reversed,size);
+    mergeSort(reversed,size);
+
+    bubbleSort(random,size);
+    selectionSort(random,size);
+    insertionSort(random,size);
+    mergeSort(random,size);*/
+
+    return 0;
+}
