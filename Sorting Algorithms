@@ -217,39 +217,29 @@ int main() {
     vector<int> random = generate_random_data(size);
 
     
-    /*auto start1 = high_resolution_clock::now();
+    auto start1 = high_resolution_clock::now();
     bubbleSort(partially_sorted,size);
     auto stop1 = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop1 - start1);
-    cerr << "Time taken in microseconds for bubble : "<< (double)(duration.count() / 1000.0) << endl;*/
+    cerr << "Time taken in microseconds for bubble : "<< (double)(duration.count() / 1000.0) << endl;
 
-    /*auto start2 = high_resolution_clock::now();
+    auto start2 = high_resolution_clock::now();
     selectionSort(partially_sorted,size);
     auto stop2 = high_resolution_clock::now();
     auto duration2 = duration_cast<microseconds>(stop2 - start2);
-    cerr << "Time taken in microseconds for selection : "<< (double)(duration2.count() / 1000.0) << endl;*/
+    cerr << "Time taken in microseconds for selection : "<< (double)(duration2.count() / 1000.0) << endl;
 
-    /*auto start3 = high_resolution_clock::now();
+    auto start3 = high_resolution_clock::now();
     quickSort(partially_sorted,0,size-1);
     auto stop3 = high_resolution_clock::now();
     auto duration3 = duration_cast<microseconds>(stop3 - start3);
-    cerr << "Time taken in microseconds for quick: "<< (double)(duration3.count() / 1000.0) << endl;*/
+    cerr << "Time taken in microseconds for quick: "<< (double)(duration3.count() / 1000.0) << endl;
 
     auto start4 = high_resolution_clock::now();
     mergeSort(partially_sorted,0,size-1);
     auto stop4 = high_resolution_clock::now();
     auto duration4 = duration_cast<microseconds>(stop4 - start4);
     cerr << "Time taken in microseconds for merge: "<< (double)(duration4.count() / 1000.0) << endl;
-
-    /*bubbleSort(reversed,size);
-    selectionSort(reversed,size);
-    insertionSort(reversed,size);
-    mergeSort(reversed,size);
-
-    bubbleSort(random,size);
-    selectionSort(random,size);
-    insertionSort(random,size);
-    mergeSort(random,size);*/
 
     return 0;
 }
